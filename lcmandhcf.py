@@ -10,5 +10,5 @@ while temp2 != 0:
     temp1 = t
     hcf = temp1
     lcm = (number1*number2)/hcf
-    print("HCF =",hcf)
-    print("LCM =",lcm)
+print("HCF =",hcf)
+print("LCM =",lcm)
