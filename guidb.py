@@ -7,8 +7,9 @@ import mysql.connector as myc
 myobj=myc.connect(user="root",password="",database="guidb")
 cusrorobj=myobj.cursor()
 window=tk.Tk()
+start_time = ''
 loginid=tk.StringVar()
-start_time=time.time()
+
 loginpass=tk.StringVar()
 def logintime():
 
@@ -22,10 +23,13 @@ def logintime():
     cusrorobj.execute("update users set time=%s where  userid=%s and password= %s", arg)
     cusrorobj.execute("commit")
     print(a)
+    exit()
 
 def newwindow():
-    window2 = tk.Tk()
-    tk.Button(window2, text="log out", command=logintime).pack()
+     global start_time
+     start_time = time.time()
+     window2 = tk.Tk()
+     tk.Button(window2, text="log out", command=logintime).pack()
 def inserttoddb():
     try:
         arg=(loginid.get(),loginpass.get())
