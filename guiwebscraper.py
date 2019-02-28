@@ -1,32 +1,48 @@
+import urllib
+
 from  bs4 import  BeautifulSoup as soup
 import  tkinter as tk
 from urllib.request import urlopen as uReq
 import pandas as pd
+import  tkinter.messagebox as mb
 import numpy as num
 window=tk.Tk()
 u=tk.StringVar()
 li=[]
 do=[]
 def scrap(url,element="a"):
-    my_url = url
-    uClient = uReq(my_url)
-    pagereader = uClient.read()
-    uClient.close()
-    page_soup = soup(pagereader, "html.parser")
-    str1=","
-    for p in page_soup.select(element):
+        try:
+            filename=str(url)
+            filename=filename.split(".")[1]
+            print(filename)
+            my_url = url
+            uClient = uReq(my_url)
+            pagereader = uClient.read()
+            uClient.close()
+            page_soup = soup(pagereader, "html.parser")
+            str1=","
+            for p in page_soup.select(element):
 
-        str1=str1+str(p.get("href"))
-    li=str1.split("https://")
-    print(li)
-    ln=[]
-    for i in li:
-        ln.append("https://"+i)
-    dataframe = pd.DataFrame({"x": [ln]})
+                str1=str1+str(p.get("href"))
+            li=str1.split("https://")
+            print(li)
+            ln=[]
+            for i in li:
+                i+=""
+                ln.append("https://"+i)
+            dataframe = pd.DataFrame({"x": [ln]})
 
-    writer = pd.ExcelWriter("go3.xlsx", engine="xlsxwriter")
-    dataframe.to_excel(writer, "Sheet1")
-    writer.save()
+            writer = pd.ExcelWriter(filename+".xlsx", engine="xlsxwriter")
+            dataframe.to_excel(writer, "Sheet1")
+            writer.save()
+        except urllib.error.HTTPError :
+            mb.showerror("$03","HTTP Error 403: Forbidden")
+            u.set("")
+        except Exception:
+            mb.showerror("oops", "Something went wrong")
+            u.set("")
+
+
 
 
 def genrateslx():
